@@ -204,6 +204,7 @@
                                     <th><span class="las la-sort"></span> Unite Price</th>
                                     <th><span class="las la-sort"></span> Issued at</th>
                                     <th><span class="las la-sort"></span> Status </th>
+                                    <th><span class="las la-sort"></span> Attachment </th>
 
                                 </tr>
                             </thead>
@@ -293,6 +294,22 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="client">
+                                    <!--      <div class="client-img bg-img" style="background-image: url(img/icon.jpeg)"></div> -->
+                                           <div class="client-info">
+                                           {% for par in all_pars %}
+                                           {% if par.attachment %}
+                                           <h4><a href="{{ par.attachment.url }}" download>{{ par.attachment.name|cut:"par_requests/" }}</a></h4>
+                                            {% else %}
+                                           <h4>No attachment</h4>
+                                            {% endif %}
+
+                                       {% endfor %}
+
+                                           </div>
+                                       </div>
+                                   </td>
 
                                     <td>
                                         <span class=""></span>

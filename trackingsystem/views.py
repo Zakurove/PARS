@@ -121,7 +121,7 @@ def user_pars(request):
 
 
 @api_view(['POST'])
-def edit_par(request):
+def edit_par(request, par_id):
     par_id = request.data.get('par_id', None)
     par_action = request.data.get('action', None)
     user_par = PARRequest.objects.get(par_id=par_id)
@@ -137,16 +137,39 @@ def edit_par(request):
 
 
 
+# @user_has_role
+# def create_par(request):
+#     if request.method == 'POST':
+#         form = PARRequestForm(request.POST)  # Initialize form with POST data
+#         if form.is_valid():
+#             par = form.save(commit=False)
+#             par.user = request.user
+#             par.created_at = datetime.now()  # Fill created_at when a new request is created
+#             par.save()
+#             return redirect('par_list')
+#     else:
+#         form = PARRequestForm()
+
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'create_par_2.html', context)
 @user_has_role
 def create_par(request):
     if request.method == 'POST':
-        form = PARRequestForm(request.POST)  # Initialize form with POST data
+        print(request.FILES)
+        form = PARRequestForm(request.POST, request.FILES)  # Initialize form with POST data
         if form.is_valid():
             par = form.save(commit=False)
             par.user = request.user
-            par.created_at = datetime.now()  # Fill created_at when a new request is created
+            print(par.attachment)
             par.save()
             return redirect('par_list')
+        else:
+            # If the form is not valid, print the errors to the console (for debugging)
+            # and send them back to the template to inform the user.
+            print(form.errors)  # Debug: Print errors to the console
+            messages.error(request, form.errors)  # Display form errors in the template
     else:
         form = PARRequestForm()
 
@@ -205,16 +228,32 @@ def par_detail(request, par_id):
     par = get_object_or_404(PARRequest, id=par_id)
     return render(request, 'par_detail.html', {'par': par})
 
+# @user_has_role
+# def edit_pars(request, par_id):
+#     par = get_object_or_404(PARRequest, id=par_id)
+
+#     if request.method == 'POST':
+#         form = PARRequestForm(request.POST, instance=par)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('par_detail', par_id=par.id)
+
+#     else:
+#         form = PARRequestForm(instance=par)
+
+#     return render(request, 'edit_par.html', {'form': form, 'par': par})
 @user_has_role
 def edit_pars(request, par_id):
     par = get_object_or_404(PARRequest, id=par_id)
-
     if request.method == 'POST':
-        form = PARRequestForm(request.POST, instance=par)
+        # Make sure to include request.FILES for file handling
+        form = PARRequestForm(request.POST, request.FILES, instance=par)
         if form.is_valid():
             form.save()
             return redirect('par_detail', par_id=par.id)
-
+        else:
+            # If the form is not valid, you might want to print form.errors to debug
+            print(form.errors)
     else:
         form = PARRequestForm(instance=par)
 

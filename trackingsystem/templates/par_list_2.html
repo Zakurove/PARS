@@ -114,6 +114,7 @@
                 <th>Category</th>
                 <th>Unit Price</th>
                 <th>Creation Date</th>
+                <th>Attachment</th>
                 <th>View details</th>
                 <th>Update Status</th> <!-- Moved to the end -->
 
@@ -128,6 +129,13 @@
                 <td>{{ par.category }}</td>
                 <td>{{ par.unite_price }}</td>
                 <td>{{ par.created_at }}</td>
+                <td>
+                {% if par.attachment %}
+                <a href="{{ par.attachment.url }}" download>{{ par.attachment.name|cut:"par_requests/" }}</a>
+                 {% else %}
+                <span>No attachment</span>
+                 {% endif %}
+             </td>
                 <td><a href="{% url 'par_detail' par.id %}">View Details</a></td>
                 <td>
                     {% if request.user.is_admin %} <!-- Only show for admin users -->

@@ -142,6 +142,15 @@
           <th>Unite Price:</th>
           <td>{{ par.unite_price }}</td>
         </tr>
+        <th>Attachment:</th>
+        <td>
+            {% if par.attachment %}
+            {{ par.attachment.name|cut:"par_requests/" }}
+             {% else %}
+            <span>No attachment</span>
+             {% endif %}
+        </td>
+      </tr>
         <!-- Add more fields here -->
       </tbody>
     </table>

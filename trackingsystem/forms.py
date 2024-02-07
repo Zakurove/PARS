@@ -19,7 +19,7 @@ class SearchForm(forms.Form):
 class PARRequestForm(forms.ModelForm):
     class Meta:
         model = PARRequest
-        fields = ['department', 'item', 'quantity', 'status', 'category', 'unite_price',  'chosen_date',]
+        fields = ['department', 'item', 'quantity', 'status', 'category', 'unite_price',  'chosen_date', 'attachment']
         exclude = ['created_at']
         widgets = {
             'chosen_date': forms.DateInput(attrs={'type': 'date'}),
